@@ -6,6 +6,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace JRSoftware.Clientes.Testes.Repositorio.DAL
 {
@@ -40,8 +41,23 @@ namespace JRSoftware.Clientes.Testes.Repositorio.DAL
 			var clienteService = new ClienteService();
 			for (int i = 0; i < 10; i++)
 			{
-				clienteService.Incluir(new Cliente() { CPF = i, Nascimento = new DateTime(2000, i + 1, 15), Nome = $"Cliente {i}" });
+				var cliente = new Cliente() { CPF = i + 1, Nascimento = new DateTime(2000, i + 1, 15), Nome = $"Cliente {i}" };
+
+				Assert.IsTrue(cliente.Id == 0);
+				clienteService.Incluir(cliente);
+				Assert.IsTrue(cliente.Id > 0);
 			}
 		}
+
+
+		[TestMethod]
+		public void DeveRetornarTodosOsClientes()
+		{
+			//DeveIncluir10Clientes();
+			var clienteService = new ClienteService();
+			var clientes = clienteService.ObterTodos();
+			Assert.IsTrue(clientes.Any());
+		}
+
 	}
 }

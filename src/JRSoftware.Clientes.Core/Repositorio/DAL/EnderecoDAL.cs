@@ -7,7 +7,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 {
 	public class EnderecoDAL : BaseDAL
 	{
-		public EnderecoDAL() : base("Endereco", "Id", "ClienteId", "Logradouro", "Numero", "Complemento", "	", "CidadeId")
+		public EnderecoDAL() : base("Endereco", "Id", "ClienteId", "Logradouro", "Numero", "Complemento", "CidadeId")
 		{
 
 		}
@@ -30,7 +30,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 		{
 			var cmdSql = CmdSelect + " Where (ClienteId = @clienteId)";
 			var parametros = new Dictionary<string, object>();
-			parametros.Add("@clienteId", clienteId);
+			parametros.Add("clienteId", clienteId);
 			return ExecuteReader(cmdSql, parametros, dr => Obter(dr));
 		}
 

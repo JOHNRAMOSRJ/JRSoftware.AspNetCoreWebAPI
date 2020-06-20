@@ -14,6 +14,7 @@ namespace JRSoftware.Clientes.Core.Abstracao
 
 		public IConnectionManager ConnectionManager { get; set; }
 
+		protected abstract string CmdCreateTable { get; }
 		protected string CmdSelect => $"Select {string.Join(", ", Campos)} From {Tabela} ";
 		protected string CmdInsert => $"Insert Into {Tabela} ({string.Join(", ", CamposInsertUpdate)}) Values ({string.Join(", ", CamposInsertUpdate.Select(c => "@" + c))}); Select last_insert_rowid();";
 		protected string CmdUpdate => $"Update {Tabela} Set {string.Join(", ", CamposInsertUpdate.Select(c => $"{c} = @{c}"))} Where (Id = @id);";
@@ -54,12 +55,11 @@ namespace JRSoftware.Clientes.Core.Abstracao
 			var array = strings.Select(c => c.ToUpper()).ToArray();
 			var item = key.ToUpper();
 			var index = 0;
-			while ((index < array.Length) && (array[index] != key))
+			while ((index < array.Length) && (array[index] != item))
 				index++;
-			return ((index < array.Length) && (array[index] == key)) ? index : -1;
+			return ((index < array.Length) && (array[index] == item)) ? index : -1;
 		}
 
-		protected abstract string CmdCreateTable { get; }
 
 		public void Setup()
 		{
