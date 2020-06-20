@@ -1,0 +1,12 @@
+  
+*.vs
+*.git
+
+*packages
+*Bin
+*Obj
+
+*.exe
+*.dll
+*.pubxml
+*.user
