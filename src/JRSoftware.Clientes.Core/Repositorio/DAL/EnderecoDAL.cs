@@ -7,7 +7,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 {
 	public class EnderecoDAL : BaseDAL
 	{
-		public EnderecoDAL() : base("Endereco", "Id", "ClienteId", "Logradouro", "Numero", "Complemento", "Bairro", "CidadeId")
+		public EnderecoDAL() : base("Endereco", "Id", "ClienteId", "Logradouro", "Numero", "Complemento", "	", "CidadeId")
 		{
 
 		}
@@ -33,5 +33,16 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 			parametros.Add("@clienteId", clienteId);
 			return ExecuteReader(cmdSql, parametros, dr => Obter(dr));
 		}
+
+		protected override string CreateTable => @"
+Create Table Endereco (
+	Id          BigInt      Not Null,
+	CidadeId    BigInt      Not Null,
+	ClienteId   BigInt      Not Null,
+	Logradouro  VarChar(30) Not Null,
+	Numero      VarChar(30) Not Null,
+	Complemento VarChar(30) Not Null,
+	Bairro      VarChar(30) Not Null
+)";
 	}
 }

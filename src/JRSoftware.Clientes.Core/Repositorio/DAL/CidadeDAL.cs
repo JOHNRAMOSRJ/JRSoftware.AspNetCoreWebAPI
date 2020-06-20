@@ -6,7 +6,13 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 	{
 		public CidadeDAL() : base("Cidade", "Id", "UFId", "Nome")
 		{
-
 		}
+
+		protected override string CreateTable => @"
+Create Table Cidade (
+	Id     BigInt      Not Null,
+	UFId   BigInt      Not Null,
+	Nome   VarChar(30) Not Null
+)";
 	}
 }

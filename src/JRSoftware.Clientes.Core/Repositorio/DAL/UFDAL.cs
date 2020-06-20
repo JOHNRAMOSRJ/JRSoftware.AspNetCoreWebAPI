@@ -9,5 +9,12 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 		{
 
 		}
+
+		protected override string CreateTable => @"
+Create Table UF (
+	Id     BigInt      Not Null,
+	Sigla  VarChar(2)  Not Null,
+	Nome   VarChar(30) Not Null
+)";
 	}
 }
