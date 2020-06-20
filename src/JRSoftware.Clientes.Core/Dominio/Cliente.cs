@@ -2,22 +2,29 @@
 using JRSoftware.Clientes.Core.Uteis;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace JRSoftware.Clientes.Core.Dominio
 {
 	public class Cliente : Entidade
 	{
+		[Required, MaxLength(30)]
 		public string Nome { get; set; }
-		public long CPF { get; set; }
-		public DateTime Nascimento { get; set; }
-		internal List<Endereco> _enderecos { get; set; }
 
-		private IEnumerable<Endereco> Enderecos => _enderecos;
+		[Required]
+		public long CPF { get; set; }
+
+		[Required]
+		public DateTime Nascimento { get; set; }
+
+		[Required]
+		public List<Endereco> Enderecos { get; set; }
+
 		public int Idade => DateTimeExtension.DiferencaEmAnos(Nascimento, DateTime.Today);
 
 		public Cliente()
 		{
-			_enderecos = new List<Endereco>();
+			Enderecos = new List<Endereco>();
 		}
 	}
 }

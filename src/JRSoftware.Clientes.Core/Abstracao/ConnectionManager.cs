@@ -21,6 +21,7 @@ namespace JRSoftware.Clientes.Core.Abstracao
 		public ConnectionManager(string connectionString)
 		{
 			_iDbConnection = new TIDbConnection() { ConnectionString = connectionString };
+			_iDbConnection.Open();
 		}
 
 		public void Close()
@@ -28,9 +29,10 @@ namespace JRSoftware.Clientes.Core.Abstracao
 			_iDbConnection?.Close();
 		}
 
-		public void Open()
+		public IConnectionManager Open()
 		{
 			_iDbConnection?.Open();
+			return this;
 		}
 
 		public void Dispose()

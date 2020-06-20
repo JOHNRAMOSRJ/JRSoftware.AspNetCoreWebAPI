@@ -27,7 +27,7 @@ namespace JRSoftware.Clientes.Core.Repositorio
 		private void PreencherEnderecos(Cliente cliente)
 		{
 			var enderecos = ObterPorClienteId(cliente.Id);
-			cliente._enderecos.AddRange(enderecos);
+			cliente.Enderecos.AddRange(enderecos);
 		}
 
 		public IEnumerable<Endereco> ObterPorClienteId(long clienteId)

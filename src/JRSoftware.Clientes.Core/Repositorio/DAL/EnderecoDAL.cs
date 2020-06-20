@@ -22,7 +22,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 				Numero = dataRecord.GetString(IndexOf("Numero")),
 				Complemento = dataRecord.GetString(IndexOf("Complemento")),
 				Bairro = dataRecord.GetString(IndexOf("Bairro")),
-				CidadeId = dataRecord.GetDateTime(IndexOf("CidadeId")),
+				CidadeId = dataRecord.GetInt64(IndexOf("CidadeId")),
 			};
 		}
 
@@ -34,7 +34,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 			return ExecuteReader(cmdSql, parametros, dr => Obter(dr));
 		}
 
-		protected override string CreateTable => @"
+		protected override string CmdCreateTable => @"
 Create Table Endereco (
 	Id          BigInt      Not Null,
 	CidadeId    BigInt      Not Null,

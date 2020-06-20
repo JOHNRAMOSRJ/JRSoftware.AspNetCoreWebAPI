@@ -10,7 +10,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 
 		}
 
-		protected override string CreateTable => @"
+		protected override string CmdCreateTable => @"
 Create Table UF (
 	Id     BigInt      Not Null,
 	Sigla  VarChar(2)  Not Null,

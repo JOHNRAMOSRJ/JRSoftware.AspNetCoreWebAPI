@@ -12,7 +12,7 @@ namespace JRSoftware.Clientes.Core.Abstracao
 		private readonly string[] Campos;
 		private readonly string[] CamposInsertUpdate;
 
-		internal IConnectionManager ConnectionManager { get; set; }
+		public IConnectionManager ConnectionManager { get; set; }
 
 		protected string CmdSelect => $"Select {string.Join(", ", Campos)} From {Tabela} ";
 		protected string CmdInsert => $"Insert Into {Tabela} ({string.Join(", ", CamposInsertUpdate)}) Values ({string.Join(", ", CamposInsertUpdate.Select(c => "@" + c))});";
@@ -41,6 +41,12 @@ namespace JRSoftware.Clientes.Core.Abstracao
 			return Convert.ToInt64(retorno);
 		}
 
+		protected int? ExecuteNonQuery(string cmdSQL, IDictionary<string, object> parameters)
+		{
+			var iDbCommand = ConnectionManager?.CreateCommandText(cmdSQL, ConnectionManager.Transaction);
+			iDbCommand?.AddParameters(parameters);
+			return iDbCommand?.ExecuteNonQuery();
+		}
 		protected int IndexOf(string campo) => IndexOf(Campos, campo);
 
 		protected static int IndexOf(IEnumerable<string> strings, string key)
@@ -53,6 +59,11 @@ namespace JRSoftware.Clientes.Core.Abstracao
 			return ((index < array.Length) && (array[index] == key)) ? index : -1;
 		}
 
-		protected abstract string CreateTable { get; }
+		protected abstract string CmdCreateTable { get; }
+
+		public void Setup()
+		{
+			ExecuteNonQuery(CmdCreateTable, null);
+		}
 	}
 }

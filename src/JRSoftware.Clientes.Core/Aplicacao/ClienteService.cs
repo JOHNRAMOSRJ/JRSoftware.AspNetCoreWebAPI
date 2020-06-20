@@ -15,7 +15,7 @@ namespace JRSoftware.Clientes.Core.Aplicacao
 		{
 			//ConnectionManager = new ConnectionManager<SqlConnection>("");
 			var fileInfo = Path.Combine(Path.GetTempPath(), "SQLiteAPI.db");
-			ConnectionManager = new ConnectionManager<SqliteConnection>(@$"Data Source={fileInfo};Version=3;Pooling=True;Max Pool Size=100;");
+			ConnectionManager = new ConnectionManager<SqliteConnection>($"Data Source={fileInfo};Version=3;Pooling=True;Max Pool Size=100;");
 		}
 
 		public IEnumerable<Cliente> ObterTodos()
