@@ -10,7 +10,7 @@ namespace JRSoftware.Clientes.Core.Dominio
 		public string Nome { get; set; }
 		public long CPF { get; set; }
 		public DateTime Nascimento { get; set; }
-		private List<Endereco> _enderecos { get; set; }
+		internal List<Endereco> _enderecos { get; set; }
 
 		private IEnumerable<Endereco> Enderecos => _enderecos;
 		public int Idade => DateTimeExtension.DiferencaEmAnos(Nascimento, DateTime.Today);

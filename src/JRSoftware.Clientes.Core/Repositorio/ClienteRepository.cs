@@ -1,7 +1,6 @@
 ﻿using JRSoftware.Clientes.Core.Abstracao;
 using JRSoftware.Clientes.Core.Dominio;
 using JRSoftware.Clientes.Core.Repositorio.DAL;
-using System;
 using System.Collections.Generic;
 
 namespace JRSoftware.Clientes.Core.Repositorio
@@ -9,11 +8,32 @@ namespace JRSoftware.Clientes.Core.Repositorio
 	public class ClienteRepository
 	{
 		public IConnectionManager ConnectionManager { get; set; }
-		public ClienteDAL ClienteDAL => new ClienteDAL() { ConnectionManager = ConnectionManager };
+
+		private ClienteDAL _clienteDAL;
+		private EnderecoRepository _enderecoRepository;
+
+		public ClienteDAL ClienteDAL => _clienteDAL ?? (_clienteDAL = new ClienteDAL() { ConnectionManager = ConnectionManager });
+		public EnderecoRepository EnderecoRepository => _enderecoRepository ?? (_enderecoRepository = new EnderecoRepository() { ConnectionManager = ConnectionManager });
 
 		public IEnumerable<Cliente> ObterTodos()
 		{
-			return ClienteDAL.ObterTodos();
+			var clientes = ClienteDAL.ObterTodos();
+			EnderecoRepository.PreencherEnderecos(clientes);
+			return clientes;
+		}
+
+		public IEnumerable<Cliente> ObterPorNome(string nome)
+		{
+			var clientes = ClienteDAL.ObterPorNome(nome);
+			EnderecoRepository.PreencherEnderecos(clientes);
+			return clientes;
+		}
+
+		public IEnumerable<Cliente> ObterPorCPF(long cpf)
+		{
+			var clientes = ClienteDAL.ObterPorCPF(cpf);
+			EnderecoRepository.PreencherEnderecos(clientes);
+			return clientes;
 		}
 	}
 }

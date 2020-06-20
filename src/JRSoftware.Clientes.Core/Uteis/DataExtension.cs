@@ -28,13 +28,16 @@ namespace JRSoftware.Clientes.Core.Uteis
 
 		public static void AddParameters(this IDbCommand iDbCommand, IDictionary<string, object> parametros)
 		{
-			foreach (var parametro in parametros)
+			if (parametros != null)
 			{
-				var parameter = iDbCommand.CreateParameter();
-				parameter.Direction = ParameterDirection.Input;
-				parameter.ParameterName = "@" + parametro.Key;
-				parameter.Value = parametro.Value;
-				iDbCommand.Parameters.Add(parameter);
+				foreach (var parametro in parametros)
+				{
+					var parameter = iDbCommand.CreateParameter();
+					parameter.Direction = ParameterDirection.Input;
+					parameter.ParameterName = "@" + parametro.Key;
+					parameter.Value = parametro.Value;
+					iDbCommand.Parameters.Add(parameter);
+				}
 			}
 		}
 
