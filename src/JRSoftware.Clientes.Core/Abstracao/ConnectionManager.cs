@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 
 namespace JRSoftware.Clientes.Core.Abstracao
 {
@@ -18,8 +19,9 @@ namespace JRSoftware.Clientes.Core.Abstracao
 		IDbConnection IConnectionManager.Connection => _iDbConnection;
 		IDbTransaction IConnectionManager.Transaction => _iDbTransaction;
 
-		public ConnectionManager(string connectionString)
+		public ConnectionManager(string connectionString, Action setup = null)
 		{
+			setup?.Invoke();
 			_iDbConnection = new TIDbConnection() { ConnectionString = connectionString };
 			_iDbConnection.Open();
 		}

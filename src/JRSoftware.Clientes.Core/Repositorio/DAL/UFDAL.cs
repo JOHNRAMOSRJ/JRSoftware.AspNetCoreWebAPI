@@ -12,7 +12,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 
 		protected override string CmdCreateTable => @"
 Create Table UF (
-	Id     BigInt      Not Null,
+	Id     Integer     Not Null Primary Key AutoIncrement,
 	Sigla  VarChar(2)  Not Null,
 	Nome   VarChar(30) Not Null
 )";

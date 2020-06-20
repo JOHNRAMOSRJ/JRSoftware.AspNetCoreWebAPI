@@ -15,7 +15,7 @@ namespace JRSoftware.Clientes.Core.Abstracao
 		public IConnectionManager ConnectionManager { get; set; }
 
 		protected string CmdSelect => $"Select {string.Join(", ", Campos)} From {Tabela} ";
-		protected string CmdInsert => $"Insert Into {Tabela} ({string.Join(", ", CamposInsertUpdate)}) Values ({string.Join(", ", CamposInsertUpdate.Select(c => "@" + c))});";
+		protected string CmdInsert => $"Insert Into {Tabela} ({string.Join(", ", CamposInsertUpdate)}) Values ({string.Join(", ", CamposInsertUpdate.Select(c => "@" + c))}); Select last_insert_rowid();";
 		protected string CmdUpdate => $"Update {Tabela} Set {string.Join(", ", CamposInsertUpdate.Select(c => $"{c} = @{c}"))} Where (Id = @id);";
 		protected string CmdDelete => $"Delete From {Tabela} Where (Id = @id);";
 

@@ -10,8 +10,8 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 
 		protected override string CmdCreateTable => @"
 Create Table Cidade (
-	Id     BigInt      Not Null,
-	UFId   BigInt      Not Null,
+	Id     Integer     Not Null Primary Key AutoIncrement,
+	UFId   Integer     Not Null,
 	Nome   VarChar(30) Not Null
 )";
 	}

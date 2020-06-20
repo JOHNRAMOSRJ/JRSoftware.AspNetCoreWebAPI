@@ -2,6 +2,7 @@
 using JRSoftware.Clientes.Core.Dominio;
 using JRSoftware.Clientes.Core.Repositorio;
 using Microsoft.Data.Sqlite;
+using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +16,7 @@ namespace JRSoftware.Clientes.Core.Aplicacao
 		{
 			//ConnectionManager = new ConnectionManager<SqlConnection>("");
 			var fileInfo = Path.Combine(Path.GetTempPath(), "SQLiteAPI.db");
-			ConnectionManager = new ConnectionManager<SqliteConnection>($"Data Source={fileInfo};Version=3;Pooling=True;Max Pool Size=100;");
+			ConnectionManager = new ConnectionManager<SqliteConnection>($"Data Source={fileInfo}", () => raw.SetProvider(new SQLite3Provider_winsqlite3()));
 		}
 
 		public IEnumerable<Cliente> ObterTodos()

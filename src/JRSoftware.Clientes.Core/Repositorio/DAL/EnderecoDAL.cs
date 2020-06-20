@@ -36,9 +36,9 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 
 		protected override string CmdCreateTable => @"
 Create Table Endereco (
-	Id          BigInt      Not Null,
-	CidadeId    BigInt      Not Null,
-	ClienteId   BigInt      Not Null,
+	Id          Integer     Not Null Primary Key AutoIncrement,
+	CidadeId    Integer     Not Null,
+	ClienteId   Integer     Not Null,
 	Logradouro  VarChar(30) Not Null,
 	Numero      VarChar(30) Not Null,
 	Complemento VarChar(30) Not Null,

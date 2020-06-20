@@ -52,20 +52,20 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 		public void Incluir(Cliente cliente)
 		{
 			var parametros = new Dictionary<string, object>();
-			parametros.Add("@Id", cliente.Id);
-			parametros.Add("@Nome", cliente.Nome);
-			parametros.Add("@CPF", cliente.CPF);
-			parametros.Add("@Nascimento", cliente.Nascimento);
+			parametros.Add("Id", cliente.Id);
+			parametros.Add("Nome", cliente.Nome);
+			parametros.Add("CPF", cliente.CPF);
+			parametros.Add("Nascimento", cliente.Nascimento);
 			cliente.Id = ExecuteScalar(CmdInsert, parametros);
 		}
 
 		public void Alterar(Cliente cliente)
 		{
 			var parametros = new Dictionary<string, object>();
-			parametros.Add("@Id", cliente.Id);
-			parametros.Add("@Nome", cliente.Nome);
-			parametros.Add("@CPF", cliente.CPF);
-			parametros.Add("@Nascimento", cliente.Nascimento);
+			parametros.Add("Id", cliente.Id);
+			parametros.Add("Nome", cliente.Nome);
+			parametros.Add("CPF", cliente.CPF);
+			parametros.Add("Nascimento", cliente.Nascimento);
 			cliente.Id = ExecuteScalar(CmdUpdate, parametros);
 		}
 
@@ -79,7 +79,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 
 		protected override string CmdCreateTable => @"
 Create Table Cliente (
-	Id         BigInt      Not Null,
+	Id         Integer     Not Null Primary Key AutoIncrement,
 	Nome       VarChar(30) Not Null,
 	CPF        BigInt      Not Null,
 	Nascimento Date        Not Null
