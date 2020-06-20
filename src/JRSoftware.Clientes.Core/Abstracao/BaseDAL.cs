@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace JRSoftware.Clientes.Core.Abstracao
 {
-
 	public class BaseDAL
 	{
 		private readonly string Tabela;
@@ -29,6 +28,18 @@ namespace JRSoftware.Clientes.Core.Abstracao
 			var iDbCommand = ConnectionManager?.CreateCommandText(cmdSQL);
 			iDbCommand?.AddParameters(parameters);
 			return iDbCommand?.ExecuteReader(func);
+		}
+
+		protected int IndexOf(string campo) => IndexOf(Campos, campo);
+
+		protected static int IndexOf(IEnumerable<string> strings, string key)
+		{
+			var array = strings.Select(c => c.ToUpper()).ToArray();
+			var item = key.ToUpper();
+			var index = 0;
+			while ((index < array.Length) && (array[index] != key))
+				index++;
+			return ((index < array.Length) && (array[index] == key)) ? index : -1;
 		}
 	}
 }
