@@ -5,6 +5,7 @@ namespace JRSoftware.Clientes.Core.Abstracao
 	public interface IConnectionManager
 	{
 		IDbConnection Connection { get; }
+		IDbTransaction Transaction { get; }
 		IDbTransaction BeginTransaction();
 		void EndTransaction(bool commit);
 	}
@@ -15,6 +16,7 @@ namespace JRSoftware.Clientes.Core.Abstracao
 		private IDbTransaction _iDbTransaction = null;
 
 		IDbConnection IConnectionManager.Connection => _iDbConnection;
+		IDbTransaction IConnectionManager.Transaction => _iDbTransaction;
 
 		public ConnectionManager(string connectionString)
 		{

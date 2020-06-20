@@ -6,28 +6,39 @@ using System.Linq;
 
 namespace JRSoftware.Clientes.Core.Abstracao
 {
-	public class BaseDAL
+	public abstract class BaseDAL
 	{
 		private readonly string Tabela;
 		private readonly string[] Campos;
+		private readonly string[] CamposInsertUpdate;
+
 		internal IConnectionManager ConnectionManager { get; set; }
 
 		protected string CmdSelect => $"Select {string.Join(", ", Campos)} From {Tabela} ";
-		protected string CmdInsert => $"Insert Into {Tabela} ({string.Join(", ", Campos)}) Values ({string.Join(", ", Campos.Select(c => "@" + c))});";
-		protected string CmdUpdate => $"Update {Tabela} Set {string.Join(", ", Campos.Select(c => $"{c} = @{c}"))} Where (Id = @id);";
+		protected string CmdInsert => $"Insert Into {Tabela} ({string.Join(", ", CamposInsertUpdate)}) Values ({string.Join(", ", CamposInsertUpdate.Select(c => "@" + c))});";
+		protected string CmdUpdate => $"Update {Tabela} Set {string.Join(", ", CamposInsertUpdate.Select(c => $"{c} = @{c}"))} Where (Id = @id);";
 		protected string CmdDelete => $"Delete From {Tabela} Where (Id = @id);";
 
 		public BaseDAL(string tabela, params string[] campos)
 		{
 			Tabela = tabela;
 			Campos = campos;
+			CamposInsertUpdate = Campos.Where(c => c.ToUpper() != "ID").ToArray();
 		}
 
 		protected IEnumerable<TResult> ExecuteReader<TResult>(string cmdSQL, IDictionary<string, object> parameters, Func<IDataRecord, TResult> func)
 		{
-			var iDbCommand = ConnectionManager?.CreateCommandText(cmdSQL);
+			var iDbCommand = ConnectionManager?.CreateCommandText(cmdSQL, ConnectionManager.Transaction);
 			iDbCommand?.AddParameters(parameters);
 			return iDbCommand?.ExecuteReader(func);
+		}
+
+		protected long ExecuteScalar(string cmdSQL, IDictionary<string, object> parameters)
+		{
+			var iDbCommand = ConnectionManager?.CreateCommandText(cmdSQL, ConnectionManager.Transaction);
+			iDbCommand?.AddParameters(parameters);
+			var retorno = iDbCommand?.ExecuteScalar();
+			return Convert.ToInt64(retorno);
 		}
 
 		protected int IndexOf(string campo) => IndexOf(Campos, campo);
@@ -41,5 +52,7 @@ namespace JRSoftware.Clientes.Core.Abstracao
 				index++;
 			return ((index < array.Length) && (array[index] == key)) ? index : -1;
 		}
+
+		protected abstract string CreateTable { get; }
 	}
 }

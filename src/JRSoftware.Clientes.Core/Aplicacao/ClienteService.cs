@@ -4,6 +4,7 @@ using JRSoftware.Clientes.Core.Repositorio;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace JRSoftware.Clientes.Core.Aplicacao
 {
@@ -13,7 +14,8 @@ namespace JRSoftware.Clientes.Core.Aplicacao
 		public ClienteService()
 		{
 			//ConnectionManager = new ConnectionManager<SqlConnection>("");
-			ConnectionManager = new ConnectionManager<SqliteConnection>("");
+			var fileInfo = Path.Combine(Path.GetTempPath(), "SQLiteAPI.db");
+			ConnectionManager = new ConnectionManager<SqliteConnection>(@$"Data Source={fileInfo};Version=3;Pooling=True;Max Pool Size=100;");
 		}
 
 		public IEnumerable<Cliente> ObterTodos()
@@ -34,7 +36,26 @@ namespace JRSoftware.Clientes.Core.Aplicacao
 			{
 				ConnectionManager.EndTransaction(commit);
 			}
+		}
 
+		public void Incluir(Cliente cliente)
+		{
+			var commit = true;
+			try
+			{
+				ConnectionManager.BeginTransaction();
+				var clienteRepository = new ClienteRepository() { ConnectionManager = ConnectionManager };
+				clienteRepository.Incluir(cliente);
+			}
+			catch (Exception)
+			{
+				commit = false;
+				throw;
+			}
+			finally
+			{
+				ConnectionManager.EndTransaction(commit);
+			}
 		}
 	}
 }

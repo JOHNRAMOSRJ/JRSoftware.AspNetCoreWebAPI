@@ -41,6 +41,18 @@ namespace JRSoftware.Clientes.Core.Uteis
 			}
 		}
 
+		public static object ExecuteScalar<TResult>(this IDbCommand iDbCommand)
+		{
+			try
+			{
+				return iDbCommand.ExecuteScalar();
+			}
+			finally
+			{
+				iDbCommand.Dispose();
+			}
+		}
+
 		public static IEnumerable<TResult> ExecuteReader<TResult>(this IDbCommand iDbCommand, Func<IDataRecord, TResult> func)
 		{
 			var iDataReader = iDbCommand.ExecuteReader();

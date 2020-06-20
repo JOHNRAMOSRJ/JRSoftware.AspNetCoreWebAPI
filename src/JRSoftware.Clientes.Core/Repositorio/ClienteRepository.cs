@@ -1,6 +1,7 @@
 ﻿using JRSoftware.Clientes.Core.Abstracao;
 using JRSoftware.Clientes.Core.Dominio;
 using JRSoftware.Clientes.Core.Repositorio.DAL;
+using System;
 using System.Collections.Generic;
 
 namespace JRSoftware.Clientes.Core.Repositorio
@@ -34,6 +35,21 @@ namespace JRSoftware.Clientes.Core.Repositorio
 			var clientes = ClienteDAL.ObterPorCPF(cpf);
 			EnderecoRepository.PreencherEnderecos(clientes);
 			return clientes;
+		}
+
+		public void Incluir(Cliente cliente)
+		{
+			ClienteDAL.Incluir(cliente);
+		}
+
+		public void Alterar(Cliente cliente)
+		{
+			ClienteDAL.Alterar(cliente);
+		}
+
+		public void Excluir(Cliente cliente)
+		{
+			ClienteDAL.Excluir(cliente);
 		}
 	}
 }
