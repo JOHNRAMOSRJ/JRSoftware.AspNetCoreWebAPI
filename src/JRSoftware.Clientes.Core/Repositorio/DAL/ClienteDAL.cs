@@ -31,7 +31,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 		{
 			var cmdSql = CmdSelect + " Where (Nome Like @nome + '%')";
 			var parametros = new Dictionary<string, object>();
-			parametros.Add("@nome", nome);
+			parametros.Add("nome", nome);
 			return ExecuteReader(cmdSql, parametros, dr => Obter(dr));
 		}
 
@@ -39,7 +39,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 		{
 			var cmdSql = CmdSelect + " Where (Nome = @nome)";
 			var parametros = new Dictionary<string, object>();
-			parametros.Add("@nome", nome);
+			parametros.Add("nome", nome);
 			return ExecuteReader(cmdSql, parametros, dr => Obter(dr));
 		}
 
@@ -47,7 +47,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 		{
 			var cmdSql = CmdSelect + " Where (Id = @id)";
 			var parametros = new Dictionary<string, object>();
-			parametros.Add("@id", id);
+			parametros.Add("id", id);
 			return ExecuteReader(cmdSql, parametros, dr => Obter(dr));
 		}
 
@@ -55,7 +55,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 		{
 			var cmdSql = CmdSelect + " Where (CPF = @cpf)";
 			var parametros = new Dictionary<string, object>();
-			parametros.Add("@cpf", cpf);
+			parametros.Add("cpf", cpf);
 			return ExecuteReader(cmdSql, parametros, dr => Obter(dr));
 		}
 
@@ -92,7 +92,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 		public void Excluir(Cliente cliente)
 		{
 			var parametros = new Dictionary<string, object>();
-			parametros.Add("@Id", cliente.Id);
+			parametros.Add("Id", cliente.Id);
 			ExecuteScalar(CmdDelete, parametros);
 		}
 

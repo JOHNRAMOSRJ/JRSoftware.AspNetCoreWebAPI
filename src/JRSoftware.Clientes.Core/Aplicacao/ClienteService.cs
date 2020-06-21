@@ -17,14 +17,29 @@ namespace JRSoftware.Clientes.Core.Aplicacao
 			return Transactional(() => ClienteRepository.ObterTodos());
 		}
 
+		public IEnumerable<Cliente> ObterPorId(long id)
+		{
+			return Transactional(() => ClienteRepository.ObterPorId(id));
+		}
+
 		public IEnumerable<Cliente> ObterPorCPF(long cpf)
 		{
 			return Transactional(() => ClienteRepository.ObterPorCPF(cpf));
 		}
 
-		public IEnumerable<Cliente> ObterPorNome(string nome)
+		public IEnumerable<Cliente> ObterPorCPF(string strCPF)
+		{
+			return Transactional(() => ClienteRepository.ObterPorCPF(strCPF));
+		}
+
+		public IEnumerable<Cliente> ObterPorNomeParcial(string nome)
 		{
 			return Transactional(() => ClienteRepository.ObterPorNomeParcial(nome));
+		}
+
+		public IEnumerable<Cliente> ObterPorNome(string nome)
+		{
+			return Transactional(() => ClienteRepository.ObterPorNome(nome));
 		}
 
 		public void Incluir(Cliente cliente)

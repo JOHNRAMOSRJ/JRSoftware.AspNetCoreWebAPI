@@ -1,8 +1,10 @@
 ﻿using JRSoftware.Clientes.Core.Abstracao;
 using JRSoftware.Clientes.Core.Dominio;
 using JRSoftware.Clientes.Core.Repositorio.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace JRSoftware.Clientes.Core.Repositorio
 {
@@ -30,11 +32,24 @@ namespace JRSoftware.Clientes.Core.Repositorio
 			return clientes;
 		}
 
+		public IEnumerable<Cliente> ObterPorNome(string nome)
+		{
+			var clientes = ClienteDAL.ObterPorNome(nome);
+			EnderecoRepository.PreencherEnderecos(clientes);
+			return clientes;
+		}
+
 		public IEnumerable<Cliente> ObterPorNomeParcial(string nome)
 		{
 			var clientes = ClienteDAL.ObterPorNomeParcial(nome);
 			EnderecoRepository.PreencherEnderecos(clientes);
 			return clientes;
+		}
+
+		public IEnumerable<Cliente> ObterPorCPF(string strCPF)
+		{
+			var cpf = Convert.ToInt64("0" + Regex.Replace(strCPF, "[^0-9]", ""));
+			return ObterPorCPF(cpf);
 		}
 
 		public IEnumerable<Cliente> ObterPorCPF(long cpf)
