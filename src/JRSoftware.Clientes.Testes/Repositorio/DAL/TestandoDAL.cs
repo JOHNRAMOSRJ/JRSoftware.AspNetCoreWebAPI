@@ -1,7 +1,7 @@
 ﻿using JRSoftware.Clientes.Core.Abstracao;
 using JRSoftware.Clientes.Core.Aplicacao;
 using JRSoftware.Clientes.Core.Dominio;
-using JRSoftware.Clientes.Core.Repositorio.DAL;
+using JRSoftware.Clientes.Testes.Abstracao;
 using Microsoft.Data.Sqlite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -11,7 +11,7 @@ using System.Linq;
 namespace JRSoftware.Clientes.Testes.Repositorio.DAL
 {
 	[TestClass]
-	public class TestandoDAL
+	public class TestandoDAL : TesteBase
 	{
 		[TestMethod]
 		public void QuandoIncluirClientes_DeveGerarOsIdentificadores()
@@ -45,7 +45,7 @@ namespace JRSoftware.Clientes.Testes.Repositorio.DAL
 
 		private Cliente CriarCliente(int i)
 		{
-			var cliente = new Cliente() { CPF = i, Nascimento = new DateTime(2000, i, 15), Nome = $"Cliente {i}" };
+			var cliente = new Cliente() { CPF = GerarCPFValido(123456789 + i), Nascimento = new DateTime(2000, i, 15), Nome = $"Cliente {i}" };
 			cliente.AdicionarEndereco(CriarEndereco(i, "Teresópolis", "RJ", "Rio de Janeiro"));
 			cliente.AdicionarEndereco(CriarEndereco(i + 10, "São Paulo", "SP", "São Paulo"));
 			return cliente;

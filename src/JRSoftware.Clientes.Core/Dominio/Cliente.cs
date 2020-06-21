@@ -63,7 +63,7 @@ namespace JRSoftware.Clientes.Core.Dominio
 				validacoes.Add("A Data de Nascimento do Cliente precisa ser menor ou igual à data de hoje");
 
 			if (!Enderecos.Any())
-				validacoes.Add("O Cliente precisa ter ao menos um endereço válido");
+				validacoes.Add("O Cliente precisa ter ao menos um Endereço válido");
 			else
 				validacoes.AddRange(Enderecos.SelectMany(e => e.ObterValidacoes()));
 

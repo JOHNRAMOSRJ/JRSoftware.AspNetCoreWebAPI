@@ -45,20 +45,20 @@ namespace JRSoftware.Clientes.Core.Repositorio
 
 		public void Incluir(Endereco endereco)
 		{
-			endereco.Validar();
+			endereco.Validar(true);
 			PreencherCidade(endereco);
 			EnderecoDAL.Incluir(endereco);
 		}
 
 		public void Incluir(Cidade cidade)
 		{
-			cidade.Validar();
+			cidade.Validar(true);
 			CidadeDAL.Incluir(cidade);
 		}
 
 		public void Incluir(UF uf)
 		{
-			uf.Validar();
+			uf.Validar(true);
 			UFDAL.Incluir(uf);
 		}
 

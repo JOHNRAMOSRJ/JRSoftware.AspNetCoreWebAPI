@@ -53,7 +53,7 @@ namespace JRSoftware.Clientes.Core.Repositorio
 
 		public void Incluir(Cliente cliente)
 		{
-			cliente.Validar();
+			cliente.Validar(true);
 			ClienteDAL.Incluir(cliente);
 			EnderecoRepository.Incluir(cliente.Enderecos);
 		}

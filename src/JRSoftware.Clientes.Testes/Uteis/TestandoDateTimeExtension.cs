@@ -1,11 +1,12 @@
 ﻿using JRSoftware.Clientes.Core.Uteis;
+using JRSoftware.Clientes.Testes.Abstracao;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 namespace JRSoftware.Clientes.Testes.Uteis
 {
 	[TestClass]
-	public class TestandoDateTimeExtension
+	public class TestandoDateTimeExtension : TesteBase
 	{
 		[TestMethod]
 		public void QuandoSolicitaDiferencaEmAnosEntre01Jan2020e01Jan2019_DeveRetornar1Ano()
