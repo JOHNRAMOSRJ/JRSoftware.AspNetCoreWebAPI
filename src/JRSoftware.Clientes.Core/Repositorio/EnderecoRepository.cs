@@ -1,6 +1,7 @@
 ﻿using JRSoftware.Clientes.Core.Abstracao;
 using JRSoftware.Clientes.Core.Dominio;
 using JRSoftware.Clientes.Core.Repositorio.DAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,10 +45,43 @@ namespace JRSoftware.Clientes.Core.Repositorio
 
 		public void Incluir(Endereco endereco)
 		{
+			endereco.Validar();
 			PreencherCidade(endereco);
 			EnderecoDAL.Incluir(endereco);
 		}
 
+		public void Incluir(Cidade cidade)
+		{
+			cidade.Validar();
+			CidadeDAL.Incluir(cidade);
+		}
+
+		public void Incluir(UF uf)
+		{
+			uf.Validar();
+			UFDAL.Incluir(uf);
+		}
+
+		public void Excluir(IEnumerable<Endereco> enderecos)
+		{
+			foreach (var endereco in enderecos)
+				Excluir(endereco);
+		}
+
+		public void Excluir(Endereco endereco)
+		{
+			EnderecoDAL.Excluir(endereco);
+		}
+
+		public void Excluir(Cidade cidade)
+		{
+			CidadeDAL.Excluir(cidade);
+		}
+
+		public void Excluir(UF uf)
+		{
+			UFDAL.Excluir(uf);
+		}
 
 		private void PreencherCidade(IEnumerable<Endereco> enderecos)
 		{
@@ -64,7 +98,7 @@ namespace JRSoftware.Clientes.Core.Repositorio
 			PreencherUF(endereco.Cidade);
 
 			if (!cidades.Any())
-				CidadeDAL.Incluir(endereco.Cidade);
+				Incluir(endereco.Cidade);
 		}
 
 		private void PreencherUF(Cidade cidade)
@@ -73,7 +107,7 @@ namespace JRSoftware.Clientes.Core.Repositorio
 			if (ufs.Any())
 				cidade.UF = ufs.FirstOrDefault();
 			else
-				UFDAL.Incluir(cidade.UF);
+				Incluir(cidade.UF);
 		}
 
 		public void Setup()

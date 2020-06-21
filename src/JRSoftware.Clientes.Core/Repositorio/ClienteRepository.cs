@@ -2,6 +2,7 @@
 using JRSoftware.Clientes.Core.Dominio;
 using JRSoftware.Clientes.Core.Repositorio.DAL;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace JRSoftware.Clientes.Core.Repositorio
 {
@@ -22,9 +23,16 @@ namespace JRSoftware.Clientes.Core.Repositorio
 			return clientes;
 		}
 
-		public IEnumerable<Cliente> ObterPorNome(string nome)
+		public IEnumerable<Cliente> ObterPorId(long id)
 		{
-			var clientes = ClienteDAL.ObterPorNome(nome);
+			var clientes = ClienteDAL.ObterPorId(id);
+			EnderecoRepository.PreencherEnderecos(clientes);
+			return clientes;
+		}
+
+		public IEnumerable<Cliente> ObterPorNomeParcial(string nome)
+		{
+			var clientes = ClienteDAL.ObterPorNomeParcial(nome);
 			EnderecoRepository.PreencherEnderecos(clientes);
 			return clientes;
 		}
@@ -36,20 +44,33 @@ namespace JRSoftware.Clientes.Core.Repositorio
 			return clientes;
 		}
 
+		public IEnumerable<Cliente> ObterPor(Cliente cliente)
+		{
+			var clientes = ClienteDAL.ObterPor(cliente);
+			EnderecoRepository.PreencherEnderecos(clientes);
+			return clientes;
+		}
+
 		public void Incluir(Cliente cliente)
 		{
+			cliente.Validar();
 			ClienteDAL.Incluir(cliente);
 			EnderecoRepository.Incluir(cliente.Enderecos);
 		}
 
 		public void Alterar(Cliente cliente)
 		{
+			var clienteGravado = ObterPorId(cliente.Id).FirstOrDefault();
+			EnderecoRepository.Excluir(clienteGravado?.Enderecos);
 			ClienteDAL.Alterar(cliente);
+			EnderecoRepository.Incluir(cliente.Enderecos);
 		}
 
 		public void Excluir(Cliente cliente)
 		{
-			ClienteDAL.Excluir(cliente);
+			var clienteGravado = ObterPorId(cliente.Id).FirstOrDefault();
+			EnderecoRepository.Excluir(clienteGravado?.Enderecos);
+			ClienteDAL.Excluir(clienteGravado);
 		}
 
 		public void Setup()

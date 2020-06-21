@@ -59,7 +59,7 @@ namespace JRSoftware.Clientes.Core.Aplicacao
 			try
 			{
 				ConnectionManager.BeginTransaction();
-				return ClienteRepository.ObterPorNome(nome);
+				return ClienteRepository.ObterPorNomeParcial(nome);
 			}
 			catch (Exception)
 			{
