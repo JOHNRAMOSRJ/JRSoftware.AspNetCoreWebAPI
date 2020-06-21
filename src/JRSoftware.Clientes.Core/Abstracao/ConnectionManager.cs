@@ -3,15 +3,18 @@ using System.Data;
 
 namespace JRSoftware.Clientes.Core.Abstracao
 {
-	public interface IConnectionManager
+	public interface IConnectionManager: IDisposable
 	{
+		void Open();
+		void Close();
 		IDbConnection Connection { get; }
 		IDbTransaction Transaction { get; }
-		IDbTransaction BeginTransaction();
+
+		void BeginTransaction();
 		void EndTransaction(bool commit);
 	}
 
-	public class ConnectionManager<TIDbConnection> : IConnectionManager where TIDbConnection : IDbConnection, new()
+	public class ConnectionManager<TIDbConnection> : IConnectionManager, IDisposable where TIDbConnection : IDbConnection, new()
 	{
 		private readonly IDbConnection _iDbConnection;
 		private IDbTransaction _iDbTransaction = null;
@@ -23,28 +26,31 @@ namespace JRSoftware.Clientes.Core.Abstracao
 		{
 			setup?.Invoke();
 			_iDbConnection = new TIDbConnection() { ConnectionString = connectionString };
-			_iDbConnection.Open();
+			Open();
+		}
+
+		public void Open()
+		{
+			if (_iDbConnection.State != ConnectionState.Open)
+				_iDbConnection.Open();
 		}
 
 		public void Close()
 		{
-			_iDbConnection?.Close();
-		}
-
-		public IConnectionManager Open()
-		{
-			_iDbConnection?.Open();
-			return this;
+			if (_iDbConnection.State != ConnectionState.Closed)
+				_iDbConnection.Close();
 		}
 
 		public void Dispose()
 		{
-			_iDbConnection?.Dispose();
+			Close();
+			_iDbConnection.Dispose();
 		}
 
-		IDbTransaction IConnectionManager.BeginTransaction()
+		void IConnectionManager.BeginTransaction()
 		{
-			return _iDbTransaction = _iDbConnection.BeginTransaction();
+			Open();
+			_iDbTransaction = _iDbConnection.BeginTransaction();
 		}
 
 		void IConnectionManager.EndTransaction(bool commit) => EndTransaction(_iDbTransaction, commit);
