@@ -1,19 +1,16 @@
 ﻿using JRSoftware.Clientes.Core.Abstracao;
 using JRSoftware.Clientes.Core.Dominio;
 using JRSoftware.Clientes.Core.Repositorio;
-using System;
 using System.Collections.Generic;
 
 namespace JRSoftware.Clientes.Core.Aplicacao
 {
-	public class ClienteService
+	public class ClienteService : BaseService
 	{
-		private IConnectionManager ConnectionManager { get; set; }
-
 		private ClienteRepository _clienteRepository;
 		private ClienteRepository ClienteRepository => _clienteRepository ??= new ClienteRepository { ConnectionManager = ConnectionManager };
 
-		public ClienteService(IConnectionManager connectionManager) { ConnectionManager = connectionManager; }
+		public ClienteService(IConnectionManager connectionManager) : base(connectionManager) { }
 
 		public IEnumerable<Cliente> ObterTodos()
 		{
@@ -43,45 +40,6 @@ namespace JRSoftware.Clientes.Core.Aplicacao
 		public void Excluir(Cliente cliente)
 		{
 			Transactional(() => ClienteRepository.Excluir(cliente));
-		}
-
-		public void Transactional(Action acao)
-		{
-			Transactional(() => acao.Invoke());
-		}
-
-		public TResult Transactional<TResult>(Func<TResult> acao)
-		{
-			var commit = true;
-			try
-			{
-				ConnectionManager.BeginTransaction();
-				return acao.Invoke();
-			}
-			catch (Exception)
-			{
-				commit = false;
-				throw;
-			}
-			finally
-			{
-				ConnectionManager.EndTransaction(commit);
-			}
-		}
-
-		public void Setup()
-		{
-			try
-			{
-				ConnectionManager.Open();
-				ClienteRepository.Setup();
-			}
-			catch { }
-			finally
-			{
-				ConnectionManager.Close();
-				ConnectionManager.Open();
-			}
 		}
 	}
 }
