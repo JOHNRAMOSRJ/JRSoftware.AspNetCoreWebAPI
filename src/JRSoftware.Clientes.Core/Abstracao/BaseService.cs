@@ -10,12 +10,17 @@ namespace JRSoftware.Clientes.Core.Abstracao
 
 		public BaseService(IConnectionManager connectionManager) { ConnectionManager = connectionManager; }
 
-		public void Transactional(Action acao)
+		protected void Transactional(Action acao)
 		{
-			Transactional(() => acao.Invoke());
+			TransactionalImpl(() => { acao.Invoke(); return true; });
 		}
 
-		public TResult Transactional<TResult>(Func<TResult> acao)
+		protected TResult Transactional<TResult>(Func<TResult> acao)
+		{
+			return TransactionalImpl(acao);
+		}
+
+		private TResult TransactionalImpl<TResult>(Func<TResult> acao)
 		{
 			var commit = true;
 			try
