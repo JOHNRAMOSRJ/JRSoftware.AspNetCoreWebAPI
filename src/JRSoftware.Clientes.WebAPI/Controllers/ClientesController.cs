@@ -50,5 +50,18 @@ namespace JRSoftware.Clientes.WebAPI.Controllers
 			ClienteService.Incluir(cliente);
 			return ClienteService.ObterPorId(cliente.Id);
 		}
+
+		[HttpPut]
+		public IEnumerable<Cliente> Put(Cliente cliente)
+		{
+			ClienteService.Alterar(cliente);
+			return ClienteService.ObterPorId(cliente.Id);
+		}
+
+		[HttpDelete, Route("{id}")]
+		public void Delete(long id)
+		{
+			ClienteService.Excluir(new Cliente { Id = id });
+		}
 	}
 }
