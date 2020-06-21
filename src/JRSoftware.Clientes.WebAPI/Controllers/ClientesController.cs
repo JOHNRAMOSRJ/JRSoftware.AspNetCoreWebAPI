@@ -7,14 +7,13 @@ using System.Collections.Generic;
 
 namespace JRSoftware.Clientes.WebAPI.Controllers
 {
-	//[ApiController, Route("[controller]")]
-	public class ClienteController : ControllerAPI
+	public class ClientesController : ControllerAPI
 	{
-		private readonly ILogger<ClienteController> _logger;
+		private readonly ILogger<ClientesController> _logger;
 
 		private ClienteService _clienteService;
 		private ClienteService ClienteService => _clienteService ??= new ClienteService(ConnectionManager);
-		public ClienteController(ILogger<ClienteController> logger)
+		public ClientesController(ILogger<ClientesController> logger)
 		{
 			_logger = logger;
 		}

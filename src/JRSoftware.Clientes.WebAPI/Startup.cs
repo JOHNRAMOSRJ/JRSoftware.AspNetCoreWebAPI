@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System;
 
 namespace JRSoftware.Clientes.WebAPI
 {
@@ -18,9 +20,22 @@ namespace JRSoftware.Clientes.WebAPI
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services
-				.AddControllers()
-			;
+			services.AddControllers();
+			services.AddSwaggerGen(c => {
+
+				c.SwaggerDoc("v1",
+					new OpenApiInfo
+					{
+						Title = "Clientes com Endereços",
+						Version = "v1",
+						Description = "Exemplo de API REST criada com o ASP.NET Core 3.1 para consulta de Clientes",
+						Contact = new OpenApiContact
+						{
+							Name = "John Ramos",
+							Url = new Uri("https://github.com/JohnRamosRJ/JRSoftware.AspNetCoreWebAPI")
+						}
+					});
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,6 +45,12 @@ namespace JRSoftware.Clientes.WebAPI
 			{
 				app.UseDeveloperExceptionPage();
 			}
+
+			// Ativando middlewares para uso do Swagger
+			app.UseSwagger();
+			app.UseSwaggerUI(c => {
+				c.SwaggerEndpoint("/swagger/v1/swagger.json", "Clientes V1");
+			});
 
 			app.UseHttpsRedirection();
 
