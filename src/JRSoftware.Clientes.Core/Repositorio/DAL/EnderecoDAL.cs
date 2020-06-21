@@ -69,10 +69,10 @@ Create Table Endereco (
 	Id          Integer     Not Null Primary Key AutoIncrement,
 	CidadeId    Integer     Not Null,
 	ClienteId   Integer     Not Null,
-	Logradouro  VarChar(30) Not Null,
-	Numero      VarChar(30) Not Null,
-	Complemento VarChar(30) Not Null,
-	Bairro      VarChar(30) Not Null
+	Logradouro  VarChar(50) Not Null,
+	Numero      VarChar(10) Not Null,
+	Complemento VarChar(20) Not Null,
+	Bairro      VarChar(40) Not Null
 )";
 	}
 }

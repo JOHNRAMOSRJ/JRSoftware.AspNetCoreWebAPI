@@ -94,7 +94,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 Create Table Cidade (
 	Id     Integer     Not Null Primary Key AutoIncrement,
 	UFId   Integer     Not Null,
-	Nome   VarChar(30) Not Null
+	Nome   VarChar(40) Not Null
 )";
 	}
 }

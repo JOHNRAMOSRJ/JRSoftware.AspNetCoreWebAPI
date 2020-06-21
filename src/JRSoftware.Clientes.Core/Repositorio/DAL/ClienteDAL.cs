@@ -1,7 +1,9 @@
 ﻿using JRSoftware.Clientes.Core.Abstracao;
 using JRSoftware.Clientes.Core.Dominio;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace JRSoftware.Clientes.Core.Repositorio.DAL
 {
@@ -25,11 +27,27 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 			return ExecuteReader(CmdSelect, null, dr => Obter(dr));
 		}
 
-		public IEnumerable<Cliente> ObterPorNome(string nome)
+		public IEnumerable<Cliente> ObterPorNomeParcial(string nome)
 		{
 			var cmdSql = CmdSelect + " Where (Nome Like @nome + '%')";
 			var parametros = new Dictionary<string, object>();
 			parametros.Add("@nome", nome);
+			return ExecuteReader(cmdSql, parametros, dr => Obter(dr));
+		}
+
+		public IEnumerable<Cliente> ObterPorNome(string nome)
+		{
+			var cmdSql = CmdSelect + " Where (Nome = @nome)";
+			var parametros = new Dictionary<string, object>();
+			parametros.Add("@nome", nome);
+			return ExecuteReader(cmdSql, parametros, dr => Obter(dr));
+		}
+
+		public IEnumerable<Cliente> ObterPorId(long id)
+		{
+			var cmdSql = CmdSelect + " Where (Id = @id)";
+			var parametros = new Dictionary<string, object>();
+			parametros.Add("@id", id);
 			return ExecuteReader(cmdSql, parametros, dr => Obter(dr));
 		}
 
@@ -39,6 +57,16 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 			var parametros = new Dictionary<string, object>();
 			parametros.Add("@cpf", cpf);
 			return ExecuteReader(cmdSql, parametros, dr => Obter(dr));
+		}
+
+		public IEnumerable<Cliente> ObterPor(Cliente cliente)
+		{
+			var clientes = ObterPorId(cliente.Id);
+			if (!clientes.Any())
+				clientes = ObterPorCPF(cliente.CPF);
+			if (!clientes.Any())
+				clientes = ObterPorNome(cliente.Nome);
+			return clientes;
 		}
 
 		public void Incluir(Cliente cliente)

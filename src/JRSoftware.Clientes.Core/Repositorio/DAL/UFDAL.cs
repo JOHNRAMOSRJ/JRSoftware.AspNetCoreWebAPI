@@ -96,7 +96,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 Create Table UF (
 	Id     Integer     Not Null Primary Key AutoIncrement,
 	Sigla  VarChar(2)  Not Null,
-	Nome   VarChar(30) Not Null
+	Nome   VarChar(40) Not Null
 )";
 	}
 }
