@@ -14,50 +14,79 @@ namespace JRSoftware.Clientes.Testes.Repositorio.DAL
 	public class TestandoDAL
 	{
 		[TestMethod]
-		public void QuandoNaoTemBanco_DeveCriar()
+		public void QuandoIncluirClientes_DeveGerarOsIdentificadores()
 		{
-			var fileInfo = Path.Combine(Path.GetTempPath(), "SQLiteAPI.db");
-			if (File.Exists(fileInfo))
-				File.Delete(fileInfo);
-			var connectionManager = new ConnectionManager<SqliteConnection>($"Data Source={fileInfo}", () => SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_winsqlite3()));
-
-			var clienteDAL = new ClienteDAL() { ConnectionManager = connectionManager };
-			var ufDAL = new UFDAL() { ConnectionManager = connectionManager };
-			var cidadeDAL = new CidadeDAL() { ConnectionManager = connectionManager };
-			var enderecoDAL = new EnderecoDAL() { ConnectionManager = connectionManager };
-
-			Setup(clienteDAL, ufDAL, cidadeDAL, enderecoDAL);
-		}
-
-		private void Setup(params BaseDAL[] listaBaseDAL)
-		{
-			foreach (var baseDAL in listaBaseDAL)
-				baseDAL.Setup();
+			using var connectionManager = ObterConnectionManager(true);
+			var clienteService = new ClienteService(connectionManager);
+			var cliente = CriarCliente(1);
+			Assert.IsTrue(cliente.Id == 0);
+			clienteService.Incluir(cliente);
+			Assert.IsTrue(cliente.Id > 0);
 		}
 
 		[TestMethod]
-		public void DeveIncluir10Clientes()
+		public void QuandoIncluir10ClientesCom2EnderecosCada_DeveRetornarOsMesmos10Clientes()
 		{
-			var clienteService = new ClienteService();
-			for (int i = 0; i < 10; i++)
+			using var connectionManager = ObterConnectionManager(true);
+			var clienteService = new ClienteService(connectionManager);
+			for (int i = 1; i <= 10; i++)
 			{
-				var cliente = new Cliente() { CPF = i + 1, Nascimento = new DateTime(2000, i + 1, 15), Nome = $"Cliente {i}" };
-
-				Assert.IsTrue(cliente.Id == 0);
+				var cliente = CriarCliente(i);
 				clienteService.Incluir(cliente);
-				Assert.IsTrue(cliente.Id > 0);
 			}
-		}
 
-
-		[TestMethod]
-		public void DeveRetornarTodosOsClientes()
-		{
-			//DeveIncluir10Clientes();
-			var clienteService = new ClienteService();
 			var clientes = clienteService.ObterTodos();
 			Assert.IsTrue(clientes.Any());
+			Assert.AreEqual(10, clientes.Count());
+			Assert.AreEqual(20, clientes.SelectMany(c => c.Enderecos).Count());
 		}
 
+		#region // "Factories"
+
+		private Cliente CriarCliente(int i)
+		{
+			var cliente = new Cliente() { CPF = i, Nascimento = new DateTime(2000, i, 15), Nome = $"Cliente {i}" };
+			cliente.AdicionarEndereco(CriarEndereco(i, "Teresópolis", "RJ", "Rio de Janeiro"));
+			cliente.AdicionarEndereco(CriarEndereco(i + 10, "São Paulo", "SP", "São Paulo"));
+			return cliente;
+		}
+
+		private Endereco CriarEndereco(int i, string cidade, string uf, string nomeUf = null)
+		{
+			return new Endereco
+			{
+				Logradouro = "Rua dos Logradouros " + i,
+				Numero = "1234",
+				Complemento = "Apto 321",
+				Bairro = "Nobre",
+				Cidade = new Cidade
+				{
+					Nome = cidade,
+					UF = new UF
+					{
+						Sigla = uf,
+						Nome = nomeUf ?? uf
+					}
+				}
+			};
+		}
+
+		public IConnectionManager ObterConnectionManager(bool forceCreate)
+		{
+			var databaseFile = Path.Combine(Path.GetTempPath(), "SQLiteAPI.db");
+
+			if (forceCreate && File.Exists(databaseFile))
+				File.Delete(databaseFile);
+
+			var connectionString = $"Data Source={databaseFile}";
+			var connectionManager = new ConnectionManager<SqliteConnection>(connectionString, () => SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_winsqlite3()));
+
+			if (forceCreate)
+				new ClienteService(connectionManager).Setup();
+
+			return connectionManager;
+		}
+
+		#endregion // "Factories"
 	}
 }
