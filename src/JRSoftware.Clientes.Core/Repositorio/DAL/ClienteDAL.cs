@@ -58,7 +58,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 			parametros.Add("Nome", cliente.Nome);
 			parametros.Add("CPF", cliente.CPF);
 			parametros.Add("Nascimento", cliente.Nascimento);
-			cliente.Id = ExecuteScalar(CmdUpdate, parametros);
+			ExecuteScalar(CmdUpdate, parametros);
 		}
 
 		public void Excluir(Cliente cliente)
@@ -67,7 +67,6 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 			parametros.Add("@Id", cliente.Id);
 			ExecuteScalar(CmdDelete, parametros);
 		}
-
 
 		protected override string CmdCreateTable => @"
 Create Table Cliente (
