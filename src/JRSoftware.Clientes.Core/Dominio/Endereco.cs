@@ -7,7 +7,7 @@ namespace JRSoftware.Clientes.Core.Dominio
 {
 	public class Endereco : Entidade
 	{
-		[Required, JsonIgnore]
+		[JsonIgnore]
 		public Cliente Cliente { get; internal set; }
 
 		[Required]

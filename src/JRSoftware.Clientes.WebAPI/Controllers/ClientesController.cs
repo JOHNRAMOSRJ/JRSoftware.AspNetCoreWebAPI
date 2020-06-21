@@ -44,8 +44,11 @@ namespace JRSoftware.Clientes.WebAPI.Controllers
 			return parcial ? ClienteService.ObterPorNomeParcial(nome) : ClienteService.ObterPorNome(nome);
 		}
 
-
-
-
+		[HttpPost]
+		public IEnumerable<Cliente> Post(Cliente cliente)
+		{
+			ClienteService.Incluir(cliente);
+			return ClienteService.ObterPorId(cliente.Id);
+		}
 	}
 }
