@@ -4,15 +4,14 @@ Essa API deve disponibilizar o CRUD de clientes e o CRUD de Endereços como recu
 Obedeça a arquitetura REST e utilize rotas para estabelecer a API e seu recurso. 
 
 Utilize as seguintes tecnologias/metodologias:
-
- •	C#
- •	WebApi 2 (Core)
- •	Swagger framework
- •	Modelagem de domínio (DDD)
- •	Garanta testes unitários
- •	Obedeça ao estilo arquitetural REST
- •	Aplique os conceitos SOLID
- •	A implementação da responsabilidade de acesso a dados deve ser contrúida através de comandos nativo SQL (update, insert, select...)
+ - C#
+ - WebApi 2 (Core)
+ - Swagger framework
+ - Modelagem de domínio (DDD)
+ - Garanta testes unitários
+ - Obedeça ao estilo arquitetural REST
+ - Aplique os conceitos SOLID
+ - A implementação da responsabilidade de acesso a dados deve ser contrúida através de comandos nativo SQL (update, insert, select...)
 
  
 Considere que o domínio é rico e as especificações de negócio são:
