@@ -1,11 +1,8 @@
 ﻿using JRSoftware.Clientes.Core.Abstracao;
 using JRSoftware.Clientes.Core.Dominio;
 using JRSoftware.Clientes.Core.Repositorio;
-using Microsoft.Data.Sqlite;
-using SQLitePCL;
 using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace JRSoftware.Clientes.Core.Aplicacao
 {
@@ -134,9 +131,17 @@ namespace JRSoftware.Clientes.Core.Aplicacao
 
 		public void Setup()
 		{
-			ConnectionManager.Open();
-			ClienteRepository.Setup();
-			ConnectionManager.Close();
+			try
+			{
+				ConnectionManager.Open();
+				ClienteRepository.Setup();
+			}
+			catch { }
+			finally 
+			{
+				ConnectionManager.Close();
+				ConnectionManager.Open();
+			}
 		}
 	}
 }
