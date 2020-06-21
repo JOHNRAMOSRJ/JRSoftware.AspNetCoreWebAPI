@@ -17,106 +17,46 @@ namespace JRSoftware.Clientes.Core.Aplicacao
 
 		public IEnumerable<Cliente> ObterTodos()
 		{
-			var commit = true;
-			try
-			{
-				ConnectionManager.BeginTransaction();
-				return ClienteRepository.ObterTodos();
-			}
-			catch (Exception)
-			{
-				commit = false;
-				throw;
-			}
-			finally
-			{
-				ConnectionManager.EndTransaction(commit);
-			}
+			return Transactional(() => ClienteRepository.ObterTodos());
 		}
 
 		public IEnumerable<Cliente> ObterPorCPF(long cpf)
 		{
-			var commit = true;
-			try
-			{
-				ConnectionManager.BeginTransaction();
-				return ClienteRepository.ObterPorCPF(cpf);
-			}
-			catch (Exception)
-			{
-				commit = false;
-				throw;
-			}
-			finally
-			{
-				ConnectionManager.EndTransaction(commit);
-			}
+			return Transactional(() => ClienteRepository.ObterPorCPF(cpf));
 		}
 
 		public IEnumerable<Cliente> ObterPorNome(string nome)
 		{
-			var commit = true;
-			try
-			{
-				ConnectionManager.BeginTransaction();
-				return ClienteRepository.ObterPorNomeParcial(nome);
-			}
-			catch (Exception)
-			{
-				commit = false;
-				throw;
-			}
-			finally
-			{
-				ConnectionManager.EndTransaction(commit);
-			}
+			return Transactional(() => ClienteRepository.ObterPorNomeParcial(nome));
 		}
 
 		public void Incluir(Cliente cliente)
 		{
-			var commit = true;
-			try
-			{
-				ConnectionManager.BeginTransaction();
-				ClienteRepository.Incluir(cliente);
-			}
-			catch (Exception)
-			{
-				commit = false;
-				throw;
-			}
-			finally
-			{
-				ConnectionManager.EndTransaction(commit);
-			}
+			Transactional(() => ClienteRepository.Incluir(cliente));
 		}
 
 		public void Alterar(Cliente cliente)
 		{
-			var commit = true;
-			try
-			{
-				ConnectionManager.BeginTransaction();
-				ClienteRepository.Alterar(cliente);
-			}
-			catch (Exception)
-			{
-				commit = false;
-				throw;
-			}
-			finally
-			{
-				ConnectionManager.EndTransaction(commit);
-			}
+			Transactional(() => ClienteRepository.Alterar(cliente));
 		}
 
 		public void Excluir(Cliente cliente)
+		{
+			Transactional(() => ClienteRepository.Excluir(cliente));
+		}
+
+		public void Transactional(Action acao)
+		{
+			Transactional(() => acao.Invoke());
+		}
+
+		public TResult Transactional<TResult>(Func<TResult> acao)
 		{
 			var commit = true;
 			try
 			{
 				ConnectionManager.BeginTransaction();
-				ClienteRepository.Excluir(cliente);
+				return acao.Invoke();
 			}
 			catch (Exception)
 			{
@@ -137,7 +77,7 @@ namespace JRSoftware.Clientes.Core.Aplicacao
 				ClienteRepository.Setup();
 			}
 			catch { }
-			finally 
+			finally
 			{
 				ConnectionManager.Close();
 				ConnectionManager.Open();
