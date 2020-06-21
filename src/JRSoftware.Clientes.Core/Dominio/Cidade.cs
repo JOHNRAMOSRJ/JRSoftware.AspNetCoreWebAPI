@@ -1,5 +1,6 @@
 ﻿using JRSoftware.Clientes.Core.Abstracao;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace JRSoftware.Clientes.Core.Dominio
 {
@@ -8,6 +9,7 @@ namespace JRSoftware.Clientes.Core.Dominio
 		[Required]
 		public UF UF { get; set; }
 
+		[JsonIgnore]
 		public long UFId
 		{
 			get { return UF?.Id ?? 0L; }

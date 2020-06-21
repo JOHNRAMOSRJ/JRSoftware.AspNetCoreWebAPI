@@ -3,6 +3,7 @@ using JRSoftware.Clientes.Core.Uteis;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace JRSoftware.Clientes.Core.Dominio
 {
@@ -17,7 +18,7 @@ namespace JRSoftware.Clientes.Core.Dominio
 		[Required]
 		public DateTime Nascimento { get; set; }
 
-		[Required]
+		[Required, JsonIgnore]
 		private List<Endereco> ListaEnderecos { get; set; }
 
 		public IEnumerable<Endereco> Enderecos => ListaEnderecos;
