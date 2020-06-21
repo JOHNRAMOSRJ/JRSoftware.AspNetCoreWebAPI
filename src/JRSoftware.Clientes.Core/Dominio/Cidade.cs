@@ -7,7 +7,13 @@ namespace JRSoftware.Clientes.Core.Dominio
 	{
 		[Required]
 		public UF UF { get; set; }
-		
+
+		public long UFId
+		{
+			get { return UF?.Id ?? 0L; }
+			set { UF = new UF { Id = value }; }
+		}
+
 		[Required, MaxLength(30)]
 		public string Nome { get; set; }
 	}

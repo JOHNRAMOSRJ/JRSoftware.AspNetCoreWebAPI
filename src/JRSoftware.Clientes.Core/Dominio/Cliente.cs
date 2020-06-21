@@ -18,13 +18,27 @@ namespace JRSoftware.Clientes.Core.Dominio
 		public DateTime Nascimento { get; set; }
 
 		[Required]
-		public List<Endereco> Enderecos { get; set; }
+		private List<Endereco> ListaEnderecos { get; set; }
+
+		public IEnumerable<Endereco> Enderecos => ListaEnderecos;
 
 		public int Idade => DateTimeExtension.DiferencaEmAnos(Nascimento, DateTime.Today);
 
 		public Cliente()
 		{
-			Enderecos = new List<Endereco>();
+			ListaEnderecos = new List<Endereco>();
+		}
+
+		public void AdicionarEnderecos(IEnumerable<Endereco> enderecos)
+		{
+			foreach (var endereco in enderecos)
+				AdicionarEndereco(endereco);
+		}
+
+		public void AdicionarEndereco(Endereco endereco)
+		{
+			endereco.Cliente = this;
+			ListaEnderecos.Add(endereco);
 		}
 	}
 }

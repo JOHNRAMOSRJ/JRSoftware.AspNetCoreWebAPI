@@ -1,7 +1,6 @@
 ﻿using JRSoftware.Clientes.Core.Abstracao;
 using JRSoftware.Clientes.Core.Dominio;
 using JRSoftware.Clientes.Core.Repositorio.DAL;
-using System;
 using System.Collections.Generic;
 
 namespace JRSoftware.Clientes.Core.Repositorio
@@ -11,10 +10,10 @@ namespace JRSoftware.Clientes.Core.Repositorio
 		public IConnectionManager ConnectionManager { get; set; }
 
 		private ClienteDAL _clienteDAL;
-		private EnderecoRepository _enderecoRepository;
+		public ClienteDAL ClienteDAL => _clienteDAL ??= new ClienteDAL { ConnectionManager = ConnectionManager };
 
-		public ClienteDAL ClienteDAL => _clienteDAL ?? (_clienteDAL = new ClienteDAL() { ConnectionManager = ConnectionManager });
-		public EnderecoRepository EnderecoRepository => _enderecoRepository ?? (_enderecoRepository = new EnderecoRepository() { ConnectionManager = ConnectionManager });
+		private EnderecoRepository _enderecoRepository;
+		public EnderecoRepository EnderecoRepository => _enderecoRepository ??= new EnderecoRepository { ConnectionManager = ConnectionManager };
 
 		public IEnumerable<Cliente> ObterTodos()
 		{
@@ -40,6 +39,7 @@ namespace JRSoftware.Clientes.Core.Repositorio
 		public void Incluir(Cliente cliente)
 		{
 			ClienteDAL.Incluir(cliente);
+			EnderecoRepository.Incluir(cliente.Enderecos);
 		}
 
 		public void Alterar(Cliente cliente)
@@ -50,6 +50,12 @@ namespace JRSoftware.Clientes.Core.Repositorio
 		public void Excluir(Cliente cliente)
 		{
 			ClienteDAL.Excluir(cliente);
+		}
+
+		public void Setup()
+		{
+			ClienteDAL.Setup();
+			EnderecoRepository.Setup();
 		}
 	}
 }

@@ -1,8 +1,8 @@
 ﻿using JRSoftware.Clientes.Core.Abstracao;
 using JRSoftware.Clientes.Core.Dominio;
 using JRSoftware.Clientes.Core.Repositorio.DAL;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace JRSoftware.Clientes.Core.Repositorio
 {
@@ -27,12 +27,60 @@ namespace JRSoftware.Clientes.Core.Repositorio
 		private void PreencherEnderecos(Cliente cliente)
 		{
 			var enderecos = ObterPorClienteId(cliente.Id);
-			cliente.Enderecos.AddRange(enderecos);
+			PreencherCidade(enderecos);
+			cliente.AdicionarEnderecos(enderecos);
 		}
 
 		public IEnumerable<Endereco> ObterPorClienteId(long clienteId)
 		{
 			return EnderecoDAL.ObterPorClienteId(clienteId);
+		}
+
+		public void Incluir(IEnumerable<Endereco> enderecos)
+		{
+			foreach (var endereco in enderecos)
+				Incluir(endereco);
+		}
+
+		public void Incluir(Endereco endereco)
+		{
+			PreencherCidade(endereco);
+			EnderecoDAL.Incluir(endereco);
+		}
+
+
+		private void PreencherCidade(IEnumerable<Endereco> enderecos)
+		{
+			foreach (var endereco in enderecos)
+				PreencherCidade(endereco);
+		}
+
+		private void PreencherCidade(Endereco endereco)
+		{
+			var cidades = CidadeDAL.ObterPor(endereco.Cidade);
+			if (cidades.Any())
+				endereco.Cidade = cidades.FirstOrDefault();
+
+			PreencherUF(endereco.Cidade);
+
+			if (!cidades.Any())
+				CidadeDAL.Incluir(endereco.Cidade);
+		}
+
+		private void PreencherUF(Cidade cidade)
+		{
+			var ufs = UFDAL.ObterPor(cidade.UF);
+			if (ufs.Any())
+				cidade.UF = ufs.FirstOrDefault();
+			else
+				UFDAL.Incluir(cidade.UF);
+		}
+
+		public void Setup()
+		{
+			UFDAL.Setup();
+			CidadeDAL.Setup();
+			EnderecoDAL.Setup();
 		}
 	}
 }
