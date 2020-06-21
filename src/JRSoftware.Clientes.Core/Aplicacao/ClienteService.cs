@@ -8,7 +8,7 @@ namespace JRSoftware.Clientes.Core.Aplicacao
 	public class ClienteService : BaseService
 	{
 		private ClienteRepository _clienteRepository;
-		private ClienteRepository ClienteRepository => _clienteRepository ??= new ClienteRepository { ConnectionManager = ConnectionManager };
+		private ClienteRepository ClienteRepository => _clienteRepository ?? (_clienteRepository = new ClienteRepository { ConnectionManager = ConnectionManager });
 
 		public ClienteService(IConnectionManager connectionManager) : base(connectionManager) { }
 

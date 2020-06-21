@@ -13,10 +13,10 @@ namespace JRSoftware.Clientes.Core.Repositorio
 		public IConnectionManager ConnectionManager { get; set; }
 
 		private ClienteDAL _clienteDAL;
-		public ClienteDAL ClienteDAL => _clienteDAL ??= new ClienteDAL { ConnectionManager = ConnectionManager };
+		public ClienteDAL ClienteDAL => _clienteDAL ?? (_clienteDAL = new ClienteDAL { ConnectionManager = ConnectionManager });
 
 		private EnderecoRepository _enderecoRepository;
-		public EnderecoRepository EnderecoRepository => _enderecoRepository ??= new EnderecoRepository { ConnectionManager = ConnectionManager };
+		public EnderecoRepository EnderecoRepository => _enderecoRepository ?? (_enderecoRepository = new EnderecoRepository { ConnectionManager = ConnectionManager });
 
 		public IEnumerable<Cliente> ObterTodos()
 		{

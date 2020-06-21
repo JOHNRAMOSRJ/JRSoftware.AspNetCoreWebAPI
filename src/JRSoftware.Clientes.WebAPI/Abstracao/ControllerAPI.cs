@@ -11,7 +11,7 @@ namespace JRSoftware.Clientes.WebAPI.Abstracao
 	{
 		private IConnectionManager _iConnectionManager;
 
-		protected IConnectionManager ConnectionManager => _iConnectionManager ??= ObterConnectionManager();
+		protected IConnectionManager ConnectionManager => _iConnectionManager ?? (_iConnectionManager = ObterConnectionManager());
 
 		private IConnectionManager ObterConnectionManager()
 		{

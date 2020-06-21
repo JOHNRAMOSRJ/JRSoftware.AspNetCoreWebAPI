@@ -14,7 +14,7 @@ namespace JRSoftware.Clientes.WebAPI.Controllers
 		private readonly ILogger<ClientesController> _logger;
 
 		private ClienteService _clienteService;
-		private ClienteService ClienteService => _clienteService ??= new ClienteService(ConnectionManager);
+		private ClienteService ClienteService => _clienteService ??(_clienteService = new ClienteService(ConnectionManager));
 		public ClientesController(ILogger<ClientesController> logger)
 		{
 			_logger = logger;
