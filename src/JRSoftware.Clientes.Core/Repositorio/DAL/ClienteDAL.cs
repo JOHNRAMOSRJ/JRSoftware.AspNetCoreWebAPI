@@ -29,7 +29,7 @@ namespace JRSoftware.Clientes.Core.Repositorio.DAL
 
 		public IEnumerable<Cliente> ObterPorNomeParcial(string nome)
 		{
-			var cmdSql = CmdSelect + " Where (Nome Like @nome + '%')";
+			var cmdSql = CmdSelect + " Where (Nome LIKE '%"+@nome+"%')";
 			var parametros = new Dictionary<string, object>();
 			parametros.Add("nome", nome);
 			return ExecuteReader(cmdSql, parametros, dr => Obter(dr));
