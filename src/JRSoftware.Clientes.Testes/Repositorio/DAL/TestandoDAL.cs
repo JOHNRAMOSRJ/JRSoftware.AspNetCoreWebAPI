@@ -16,31 +16,34 @@ namespace JRSoftware.Clientes.Testes.Repositorio.DAL
 		[TestMethod]
 		public void QuandoIncluirClientes_DeveGerarOsIdentificadores()
 		{
-			using var connectionManager = ObterConnectionManager(true);
-			var clienteService = new ClienteService(connectionManager);
-			var cliente = CriarCliente(1);
-			Assert.IsTrue(cliente.Id == 0);
-			clienteService.Incluir(cliente);
-			Assert.IsTrue(cliente.Id > 0);
+            using (var connectionManager = ObterConnectionManager(true))
+            {
+                var clienteService = new ClienteService(connectionManager);
+                var cliente = CriarCliente(1);
+                Assert.IsTrue(cliente.Id == 0);
+                clienteService.Incluir(cliente);
+                Assert.IsTrue(cliente.Id > 0);
+            }
 		}
 
-		[TestMethod]
-		public void QuandoIncluir10ClientesCom2EnderecosCada_DeveRetornarOsMesmos10Clientes()
-		{
-			using var connectionManager = ObterConnectionManager(true);
-			var clienteService = new ClienteService(connectionManager);
-			for (int i = 1; i <= 10; i++)
-			{
-				var cliente = CriarCliente(i);
-				clienteService.Incluir(cliente);
-			}
+        [TestMethod]
+        public void QuandoIncluir10ClientesCom2EnderecosCada_DeveRetornarOsMesmos10Clientes()
+        {
+            using (var connectionManager = ObterConnectionManager(true))
+            {
+                var clienteService = new ClienteService(connectionManager);
+                for (int i = 1; i <= 10; i++)
+                {
+                    var cliente = CriarCliente(i);
+                    clienteService.Incluir(cliente);
+                }
 
-			var clientes = clienteService.ObterTodos();
-			Assert.IsTrue(clientes.Any());
-			Assert.AreEqual(10, clientes.Count());
-			Assert.AreEqual(20, clientes.SelectMany(c => c.Enderecos).Count());
-		}
-
+                var clientes = clienteService.ObterTodos();
+                Assert.IsTrue(clientes.Any());
+                Assert.AreEqual(10, clientes.Count());
+                Assert.AreEqual(20, clientes.SelectMany(c => c.Enderecos).Count());
+            }
+        }
 		#region // "Factories"
 
 		private Cliente CriarCliente(int i)
